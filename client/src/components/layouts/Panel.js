@@ -94,12 +94,11 @@ const Panel = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { first, last, url } = inputs;
-    handleClose();
     if (first && last && url) {
       setSnackBarOpen(true);
     }
-    
+    await axios.post('http://localhost:4000/posts', {inputs});
+    handleClose();
   };
 
   const handleSnackbarClose = (e, reason) => {
@@ -178,7 +177,7 @@ const Panel = () => {
       </Fab>
       <Snackbar open={snackBarOpen} autoHideDuration={3000} onClose={handleSnackbarClose}>
         <Alert severity="success" onClose={handleSnackbarClose}>
-          Successfully added
+          Valid information
         </Alert>
       </Snackbar>
     </div>

@@ -12,6 +12,7 @@ import {
   Snackbar
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,12 +93,18 @@ const Panel = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const { first, last, url } = inputs;
     if (first && last && url) {
-      setSnackBarOpen(true);
+      ;
+    } else {
+      handleClose();
+      return;
     }
-    await axios.post('http://localhost:4000/posts', {inputs});
+    const res = await fetch(axios.post('http://localhost:4000/posts', inputs));
+    console.log(res.data);
+    setSnackBarOpen(true);
     handleClose();
   };
 

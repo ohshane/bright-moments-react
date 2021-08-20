@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-import { Fab, Modal, Backdrop, Fade, TextField, Typography, Button } from '@material-ui/core';
+import {
+  Fab,
+  Modal,
+  Backdrop,
+  Fade,
+  TextField,
+  Typography,
+  Button,
+  Snackbar
+} from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // border: 'black solid 1px',
     width: '100%',
     height: 'calc(100vh - 160px)',
     '& > *': {
@@ -25,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   field: {
     '& > *': {
-      margin: theme.spacing(1)
+      margin: theme.spacing(1),
     }
   },
   namefield: {
@@ -40,7 +49,17 @@ const useStyles = makeStyles((theme) => ({
       width: '416px',
     }
   },
+  submitfield: {
+    '& > *': {
+      margin: theme.spacing(1),
+      float: 'right',
+    }
+  },
 }));
+
+const Alert = (props) => {
+  return <MuiAlert elevation={6} variant="filled" {...props}/>
+};
 
 const Panel = () => {
   const classes = useStyles();
@@ -50,6 +69,7 @@ const Panel = () => {
     last: '',
     url: '',
   });
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
@@ -74,7 +94,19 @@ const Panel = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(inputs);
+    const { first, last, url } = inputs;
+    handleClose();
+    if (first && last && url) {
+      setSnackBarOpen(true);
+    }
+    
+  };
+
+  const handleSnackbarClose = (e, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackBarOpen(false);
   };
 
   const modal = (
@@ -123,13 +155,15 @@ const Panel = () => {
                 variant="outlined"
               />
             </div>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-            >
-              Add
-            </Button>
+            <div className={classes.submitfield}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+              >
+                Add
+              </Button>
+            </div>
           </form>
         </div>
       </Fade>
@@ -142,6 +176,11 @@ const Panel = () => {
       <Fab onClick={handleOpen} color="primary" aria-label="add">
         <AddIcon />
       </Fab>
+      <Snackbar open={snackBarOpen} autoHideDuration={3000} onClose={handleSnackbarClose}>
+        <Alert severity="success" onClose={handleSnackbarClose}>
+          Successfully added
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

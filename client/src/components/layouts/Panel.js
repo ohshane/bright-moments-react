@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import {
@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios';
+import SessionCard from './SessionCard';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +63,7 @@ const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props}/>
 };
 
-const Panel = () => {
+const Panel = (props) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [inputs, setInputs] = useState({
@@ -71,6 +72,7 @@ const Panel = () => {
     url: '',
   });
   const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const [cards, setCards] = useState({});
 
   const handleOpen = () => {
     setOpen(true);
@@ -102,8 +104,8 @@ const Panel = () => {
       handleClose();
       return;
     }
-    const res = await fetch(axios.post('http://localhost:4000/posts', inputs));
-    console.log(res.data);
+    await axios.post('http://localhost:4000/posts', inputs);
+    fetchPosts();
     setSnackBarOpen(true);
     handleClose();
   };
@@ -114,6 +116,13 @@ const Panel = () => {
     }
     setSnackBarOpen(false);
   };
+
+  const fetchPosts = async () => {
+    const res = await axios.get('http://localhost:4000/posts');
+    setCards(res.data);
+  };
+
+  useEffect(() => fetchPosts(), []);
 
   const modal = (
     <Modal
@@ -176,8 +185,15 @@ const Panel = () => {
     </Modal>
   );
 
+  const renderedPosts = Object.values(cards).map(card => {
+    return (
+      <SessionCard key={card.id} card={card}/>
+    );
+  });
+
   return (
     <div className={classes.root}>
+      {renderedPosts}
       {modal}
       <Fab onClick={handleOpen} color="primary" aria-label="add">
         <AddIcon />

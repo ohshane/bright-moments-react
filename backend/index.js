@@ -13,12 +13,15 @@ app.get('/ping',(req, res) => {
   res.status(201).send({ 'ping': 'pong' });
 });
 
+app.get('/posts', (req, res) => {
+  res.status(201).send(posts);
+});
+
 app.post('/posts', (req, res) => {
-  let inputs = req.body;
+  const inputs = req.body;
   const id = randomBytes(8).toString('hex');
   const info = { ['id']: id, ...inputs };
   posts[id] = info;
-  console.log(posts);
   res.status(201).send(info);
 });
 

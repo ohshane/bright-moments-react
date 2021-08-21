@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Container, createTheme, CssBaseline } from '@material-ui/core';
-import { purple, green, yellow } from '@material-ui/core/colors';
+import { purple, green } from '@material-ui/core/colors';
 import { ThemeProvider } from '@material-ui/styles';
 import Main from 'components/pages/Main';
 
@@ -20,7 +20,7 @@ const App = () => {
     <Fragment>
       <CssBaseline />
       <ThemeProvider theme={theme}>
-        <Container maxWidth="lg">
+        <Container maxWidth="md">
           <Main />
         </Container>
       </ThemeProvider>

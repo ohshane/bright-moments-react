@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SessionCard = () => {
+const SessionCard = (props) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -44,10 +44,10 @@ const SessionCard = () => {
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
-            Live From Space
+            {props.card.first} {props.card.last}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            Mac Miller
+            {props.card.id}
           </Typography>
         </CardContent>
         <div className={classes.controls}>

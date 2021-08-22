@@ -18,11 +18,18 @@ import SessionCard from './SessionCard';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    height: 'calc(100vh - 160px)',
-    '& > *': {
-      float: 'right',
-      top: 'calc(100vh - 160px - 56px)',
-    },
+    minHeight: 'calc(100vh - 150px)',
+    // '& > *': {
+    //   float: 'right',
+    //   top: 'calc(100vh - 160px - 56px)',
+    // },
+  },
+  fab: {
+    position: 'fixed',
+    float: 'right',
+    bottom: 'max(40px, 10%)',
+    right: 'max(40px, 10%)',
+    zIndex: 99,
   },
   modal: {
     display: 'flex',
@@ -193,11 +200,13 @@ const Panel = (props) => {
 
   return (
     <div className={classes.root}>
-      {renderedPosts}
-      {modal}
-      <Fab onClick={handleOpen} color="primary" aria-label="add">
+      <Fab className={classes.fab} onClick={handleOpen} color="primary" aria-label="add">
         <AddIcon />
       </Fab>
+      <div>
+        {renderedPosts}
+      </div>
+      {modal}
       <Snackbar open={snackBarOpen} autoHideDuration={3000} onClose={handleSnackbarClose}>
         <Alert severity="success" onClose={handleSnackbarClose}>
           Valid information

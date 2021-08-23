@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,10 +8,14 @@ import Typography from '@material-ui/core/Typography';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
+import io from 'socket.io-client';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    height: '30vh',
+    minHeight: '200px',
     margin: theme.spacing(2, 0),
   },
   details: {
@@ -22,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 0 auto',
   },
   cover: {
-    width: 151,
+    width: '100%',
   },
   controls: {
     display: 'flex',
@@ -39,6 +43,14 @@ const useStyles = makeStyles((theme) => ({
 const SessionCard = (props) => {
   const classes = useStyles();
   const theme = useTheme();
+
+  const [capture, setCapture] = useState({});
+
+  const startStream = async () => {
+    await axios.get(`http://localhost:4000/stream/${props.card.id}`);
+  };
+
+  useEffect(() => startStream() ,[]);
 
   return (
     <Card className={classes.root}>
@@ -65,8 +77,8 @@ const SessionCard = (props) => {
       </div>
       <CardMedia
         className={classes.cover}
-        image="/static/images/cards/live-from-space.jpg"
-        title="Live from space album cover"
+        image="https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg"
+        title={props.card.url}
       />
     </Card>
   );
